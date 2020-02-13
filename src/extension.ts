@@ -12,20 +12,23 @@ export function activate(context: vscode.ExtensionContext) {
 	const lightTheme = userSettings.get('workbench.preferredLightColorTheme');
 	const darkTheme = userSettings.get('workbench.preferredDarkColorTheme');
 
-	const startDay = extensionConfig.get('themeswitcher.startDay') as number;
-	const endDay = extensionConfig.get('themeswitcher.endDay') as number;
+	const startDay = extensionConfig.get('startDay') as number;
+	const endDay = extensionConfig.get('endDay') as number;
 
 	const currentHour = new Date().getHours();
 	// const isDay = false;
 	const isDay = currentHour > startDay && currentHour < endDay;
 	const currentTheme = isDay ? lightTheme : darkTheme
 
+	// console.log(lightTheme, darkTheme, startDay, endDay, currentHour, isDay, currentTheme)
+
 	userSettings.update("workbench.colorTheme", currentTheme, true);
 
 	// // Use the console to output diagnostic information (console.log) and errors (console.error)
 	// // This line of code will only be executed once when your extension is activated
 	// console.log('Congratulations, your extension "themeswitcher" is now active!');
-	vscode.window.showInformationMessage(`It is ${isDay ? 'day time' : 'night time'}. Your theme is now ${currentTheme}.`);
+
+	vscode.window.showInformationMessage(`It is ${isDay ? 'day' : 'night'} time. Your theme is now ${currentTheme}.`);
 }
 
 // this method is called when your extension is deactivated
