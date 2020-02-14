@@ -3,7 +3,7 @@
 	"displayName": "ThemeSwitcher",
 	"description": "Swaps theme based on time of day",
 	"publisher": "MohnishKalia",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"engines": {
 		"vscode": "^1.42.0"
 	},
