@@ -18,7 +18,7 @@
 		"commands": [
 			{
 				"command": "themeswitcher.changeDay",
-				"title": "Change Day"
+				"title": "ThemeSwitcher: Change Day"
 			}
 		],
 		"configuration": {

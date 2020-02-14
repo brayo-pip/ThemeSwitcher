@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { resolve, normalize } from 'path';
 
 export function activate(context: vscode.ExtensionContext) {
 	const userSettings = vscode.workspace.getConfiguration();
