@@ -15,18 +15,24 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"commands": [
+			{
+				"command": "themeswitcher.changeDay",
+				"title": "Change Day"
+			}
+		],
 		"configuration": {
 			"title": "ThemeSwitcher",
 			"properties": {
 				"themeswitcher.startDay": {
-					"type": "number",
-					"default": 7,
-					"description": "The hour from 0-23 you want light theme to start."
+					"type": "string",
+					"default": "7:00",
+					"description": "The 24-hour time (HH:MM) you want light theme to start."
 				},
 				"themeswitcher.endDay": {
-					"type": "number",
-					"default": 15,
-					"description": "The hour from 0-23 you want dark theme to start."
+					"type": "string",
+					"default": "15:00",
+					"description": "The 24-hour time (HH:MM) you want dark theme to start."
 				}
 			}
 		}
