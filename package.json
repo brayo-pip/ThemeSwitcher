@@ -20,6 +20,10 @@
 			{
 				"command": "themeswitcher.changeDay",
 				"title": "ThemeSwitcher: Change Day"
+			},
+			{
+				"command": "themeswitcher.changeThemes",
+				"title": "ThemeSwitcher: Change Themes"
 			}
 		],
 		"configuration": {
@@ -35,15 +39,15 @@
 					"default": "15:00",
 					"description": "The 24-hour time (HH:MM) you want dark theme to start."
 				},
-				"themeswitcher.preferredDarkColorTheme": {
-					"type": "string",
-					"default": "Default Dark+",
-					"description": "The dark theme used at night."
-				},
 				"themeswitcher.preferredLightColorTheme": {
 					"type": "string",
 					"default": "Default Light+",
-					"description": "The light theme used in day."
+					"markdownDescription": "The light theme used in day. (overrriden by `workbench.preferredLightColorTheme` if available)"
+				},
+				"themeswitcher.preferredDarkColorTheme": {
+					"type": "string",
+					"default": "Default Dark+",
+					"description": "The dark theme used at night. (overrriden by `workbench.preferredDarkColorTheme` if available)"
 				}
 			}
 		}

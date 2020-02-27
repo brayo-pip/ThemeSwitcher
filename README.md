@@ -17,9 +17,9 @@ This extension contributes the following settings:
 * `themeswitcher.preferredLightColorTheme`: the light theme used in day
 * `themeswitcher.preferredDarkColorTheme`: the dark theme used at night
 
-## Upcoming Changes
+## Important Information
 
-As of the current Insider build (1.43.0), `workbench.preferredLightColorTheme` and `workbench.preferredDarkColorTheme` are available for native theme settings.
-Once the public versions of these settings are on the stable release, this extension will use those instead of the extension specific settings.
+As of the January 2020 Stable build (1.42.0), `workbench.preferredLightColorTheme` and `workbench.preferredDarkColorTheme` are available for native theme settings.
+For those who have access to this new feature, this extension will use those settings instead of the extension specific settings.
 
 >Icon made by Vectors Market from www.flaticon.com
