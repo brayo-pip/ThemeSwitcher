@@ -15,7 +15,7 @@ This extension contributes the following settings:
 * `themeswitcher.startDay`: set the 24-hour clock start of the day 
 * `themeswitcher.endDay`: set the 24-hour clock end of the day 
 * `themeswitcher.preferredLightColorTheme`: the light theme used in day
-* `themeswitcher.preferredDarkColorTheme`: the dark theme used at day
+* `themeswitcher.preferredDarkColorTheme`: the dark theme used at night
 
 ## Upcoming Changes
 
