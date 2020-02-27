@@ -4,6 +4,10 @@
 	"description": "Swaps theme based on time of day",
 	"publisher": "MohnishKalia",
 	"icon": "images/moon.png",
+	"galleryBanner": {
+		"color": "#941FC7",
+		"theme": "dark"
+	},
 	"version": "0.3.1",
 	"engines": {
 		"vscode": "^1.40.0"
@@ -42,12 +46,12 @@
 				"themeswitcher.preferredLightColorTheme": {
 					"type": "string",
 					"default": "Default Light+",
-					"markdownDescription": "The light theme used in day.\n>Overrriden by `workbench.preferredLightColorTheme` if available"
+					"markdownDescription": "The light theme used in day.\n\nOverrriden by `workbench.preferredLightColorTheme` if available"
 				},
 				"themeswitcher.preferredDarkColorTheme": {
 					"type": "string",
 					"default": "Default Dark+",
-					"markdownDescription": "The dark theme used at night.\n>Overrriden by `workbench.preferredDarkColorTheme` if available"
+					"markdownDescription": "The dark theme used at night.\n\nOverrriden by `workbench.preferredDarkColorTheme` if available"
 				}
 			}
 		}
