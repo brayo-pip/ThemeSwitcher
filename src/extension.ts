@@ -24,24 +24,27 @@ export function activate(context: vscode.ExtensionContext) {
 	const startDay = extensionConfig.get('startDay') as string;
 	const endDay = extensionConfig.get('endDay') as string;
 
-	const lightTheme = userSettings.get(userPrefLight) as string | undefined;
-	const darkTheme = userSettings.get(userPrefDark) as string | undefined;
+	class Themes {
+		private hasUserSettings = Boolean(userSettings.get(userPrefLight)) && Boolean(userSettings.get(userPrefDark));
 
-	const getLightTheme = () => {
-		return lightTheme ? lightTheme : extensionConfig.get(prefLight);
+		getLightTheme() {
+			return (this.hasUserSettings ? userSettings.get(userPrefLight) : extensionConfig.get(prefLight)) as string;
+		}
+
+		setLightTheme(theme: string) {
+			this.hasUserSettings ? userSettings.update(userPrefLight, theme, true) : extensionConfig.update(prefLight, theme, true);
+		}
+
+		getDarkTheme() {
+			return (this.hasUserSettings ? userSettings.get(userPrefDark) : extensionConfig.get(prefDark)) as string;
+		}
+
+		setDarkTheme(theme: string) {
+			this.hasUserSettings ? userSettings.update(userPrefDark, theme, true) : extensionConfig.update(prefDark, theme, true);
+		}
 	}
 
-	const setLightTheme = (theme: string) => {
-		lightTheme ? userSettings.update(userPrefLight, theme, true) : extensionConfig.update(prefLight, theme, true);
-	}
-
-	const getDarkTheme = () => {
-		return darkTheme ? darkTheme : extensionConfig.get(prefDark);
-	}
-
-	const setDarkTheme = (theme: string) => {
-		darkTheme ? userSettings.update(userPrefDark, theme, true) : extensionConfig.update(prefDark, theme, true);
-	}
+	const themes = new Themes();
 
 	context.subscriptions.push(vscode.commands.registerCommand('themeswitcher.changeDay', async () => {
 		const start = await vscode.window.showInputBox({ prompt: 'Enter start day time.', placeHolder: 'HH:MM' });
@@ -51,17 +54,18 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('themeswitcher.changeThemes', async () => {
-		const lightTheme = await vscode.window.showQuickPick(availableThemes, {
-			placeHolder: 'Pick a theme to be your light theme.',
+		const light = await vscode.window.showQuickPick(availableThemes, {
+			placeHolder: 'Pick a theme to be your light theme (esc to skip this step).',
 		});
-		const darkTheme = await vscode.window.showQuickPick(availableThemes, {
-			placeHolder: 'Pick a theme to be your dark theme.',
+		const dark = await vscode.window.showQuickPick(availableThemes, {
+			placeHolder: 'Pick a theme to be your dark theme (esc to skip this step).',
 		});
-		if (lightTheme && darkTheme) {
-			setLightTheme(lightTheme);
-			setDarkTheme(darkTheme);
-			vscode.window.showInformationMessage(`Changes successful. Light: ${lightTheme}, Dark: ${darkTheme}`);
-		}
+		if (light)
+			themes.setLightTheme(light);
+		if (dark)
+			themes.setDarkTheme(dark);
+		if (light || dark)
+			vscode.window.showInformationMessage(`Success! Light: ${light ? light : themes.getLightTheme()}, Dark: ${dark ? dark : themes.getDarkTheme()}`);
 	}));
 
 	let startTime = 0, endTime = 0;
@@ -81,7 +85,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const currentTime = new Date().getTime();
 
 	const isDay = currentTime > startTime && currentTime < endTime;
-	const currentTheme = isDay ? getLightTheme() : getDarkTheme();
+	const currentTheme = isDay ? themes.getLightTheme() : themes.getDarkTheme();
 
 	userSettings.update("workbench.colorTheme", currentTheme, true);
 
