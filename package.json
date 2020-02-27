@@ -3,6 +3,7 @@
 	"displayName": "ThemeSwitcher",
 	"description": "Swaps theme based on time of day",
 	"publisher": "MohnishKalia",
+	"icon": "images/moon.png",
 	"version": "0.1.2",
 	"engines": {
 		"vscode": "^1.40.0"
@@ -33,6 +34,16 @@
 					"type": "string",
 					"default": "15:00",
 					"description": "The 24-hour time (HH:MM) you want dark theme to start."
+				},
+				"themeswitcher.preferredDarkColorTheme": {
+					"type": "string",
+					"default": "Default Dark+",
+					"description": "The dark theme used at night."
+				},
+				"themeswitcher.preferredLightColorTheme": {
+					"type": "string",
+					"default": "Default Light+",
+					"description": "The light theme used in day."
 				}
 			}
 		}

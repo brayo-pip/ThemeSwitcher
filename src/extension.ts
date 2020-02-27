@@ -4,10 +4,10 @@ export function activate(context: vscode.ExtensionContext) {
 	const userSettings = vscode.workspace.getConfiguration();
 	const extensionConfig = vscode.workspace.getConfiguration('themeswitcher');
 
-	const prefLight = 'workbench.preferredLightColorTheme';
-	const lightTheme = userSettings.get(prefLight);
-	const prefDark = 'workbench.preferredDarkColorTheme';
-	const darkTheme = userSettings.get(prefDark);
+	const prefLight = 'preferredLightColorTheme';
+	const lightTheme = extensionConfig.get(prefLight) as string;
+	const prefDark = 'preferredDarkColorTheme';
+	const darkTheme = extensionConfig.get(prefDark) as string;
 
 	const startDay = extensionConfig.get('startDay') as string;
 	const endDay = extensionConfig.get('endDay') as string;
