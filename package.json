@@ -42,12 +42,12 @@
 				"themeswitcher.preferredLightColorTheme": {
 					"type": "string",
 					"default": "Default Light+",
-					"markdownDescription": "The light theme used in day. (overrriden by `workbench.preferredLightColorTheme` if available)"
+					"markdownDescription": "The light theme used in day.\n>Overrriden by `workbench.preferredLightColorTheme` if available"
 				},
 				"themeswitcher.preferredDarkColorTheme": {
 					"type": "string",
 					"default": "Default Dark+",
-					"description": "The dark theme used at night. (overrriden by `workbench.preferredDarkColorTheme` if available)"
+					"markdownDescription": "The dark theme used at night.\n>Overrriden by `workbench.preferredDarkColorTheme` if available"
 				}
 			}
 		}
