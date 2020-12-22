@@ -8,7 +8,7 @@
 		"color": "#941FC7",
 		"theme": "dark"
 	},
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"engines": {
 		"vscode": "^1.42.0"
 	},
