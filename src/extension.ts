@@ -82,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// get the startDay, endDay, and flipThemeTiming vars from the extension config
 	const startDay = extensionConfig.get('startDay') as string;
 	const endDay = extensionConfig.get('endDay') as string;
-	const flipThemeTiming = extensionConfig.get('filpThemeTiming') as boolean;
+	const flipThemeTiming = extensionConfig.get('flipThemeTiming') as boolean;
 
 	// attempt to get reasonable startTime and endTime for the daytime check (changeDay if bad values)
 	let startTime = 0, endTime = 0;
