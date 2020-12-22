@@ -1,58 +1,64 @@
 import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
+
+	/* SETUP CODE */
+
+	// init the configs for the user and for the extension
 	const userSettings = vscode.workspace.getConfiguration();
 	const extensionConfig = vscode.workspace.getConfiguration('themeswitcher');
 
+	// get a list of themes on the system
 	const availableThemes: string[] = [];
-
 	for (const extension of vscode.extensions.all) {
-		if (Object.keys(extension.packageJSON).includes('contributes')) {
-			if (Object.keys(extension.packageJSON.contributes).includes('themes')) {
-				for (const theme of extension.packageJSON.contributes.themes) {
-					availableThemes.push(theme.id ? theme.id : theme.label);
-				}
-			}
+		for (const theme of extension.packageJSON.contributes?.themes) {
+			availableThemes.push(theme.id ?? theme.label);
 		}
 	}
-	const prefLight = 'preferredLightColorTheme';
-	const prefDark = 'preferredDarkColorTheme';
 
-	const userPrefLight = `workbench.${prefLight}`;
-	const userPrefDark = `workbench.${prefDark}`;
-
-	const startDay = extensionConfig.get('startDay') as string;
-	const endDay = extensionConfig.get('endDay') as string;
-
+	// create a Themes class for interacting with the user settings
 	class Themes {
-		private hasUserSettings = Boolean(userSettings.get(userPrefLight)) && Boolean(userSettings.get(userPrefDark));
+		// get the setting ids for the user's light/dark theme
+		static userPrefLightId = 'workbench.preferredLightColorTheme';
+		static userPrefDarkId = 'workbench.preferredDarkColorTheme';
 
-		getLightTheme() {
-			return (this.hasUserSettings ? userSettings.get(userPrefLight) : extensionConfig.get(prefLight)) as string;
+		static getLightTheme() {
+			return userSettings.get(Themes.userPrefLightId) as string;
 		}
 
-		setLightTheme(theme: string) {
-			this.hasUserSettings ? userSettings.update(userPrefLight, theme, true) : extensionConfig.update(prefLight, theme, true);
+		static setLightTheme(theme: string) {
+			userSettings.update(Themes.userPrefLightId, theme, true);
 		}
 
-		getDarkTheme() {
-			return (this.hasUserSettings ? userSettings.get(userPrefDark) : extensionConfig.get(prefDark)) as string;
+		static getDarkTheme() {
+			return userSettings.get(Themes.userPrefDarkId) as string;
 		}
 
-		setDarkTheme(theme: string) {
-			this.hasUserSettings ? userSettings.update(userPrefDark, theme, true) : extensionConfig.update(prefDark, theme, true);
+		static setDarkTheme(theme: string) {
+			userSettings.update(Themes.userPrefDarkId, theme, true);
 		}
 	}
 
-	const themes = new Themes();
+	const reloadPrompt = async () => {
+		const rw = 'Reload Window';
+		const choice = await vscode.window.showWarningMessage('Reload the window for changes to take effect.', rw);
+		if (choice === rw)
+			vscode.commands.executeCommand('developer.reloadWindow');
+	};
 
+	// register the changeDay command (updates startDay and endDay vars)
 	context.subscriptions.push(vscode.commands.registerCommand('themeswitcher.changeDay', async () => {
 		const start = await vscode.window.showInputBox({ prompt: 'Enter start day time.', placeHolder: 'HH:MM' });
-		extensionConfig.update('startDay', start, true);
 		const end = await vscode.window.showInputBox({ prompt: 'Enter end day time.', placeHolder: 'HH:MM' });
-		extensionConfig.update('endDay', end, true);
+		if (start)
+			extensionConfig.update('startDay', start, true);
+		if (end)
+			extensionConfig.update('endDay', end, true);
+		if (start || end)
+			await reloadPrompt();
 	}));
 
+	// register the changeThemes command (update the prefLight/Dark theme vars)
 	context.subscriptions.push(vscode.commands.registerCommand('themeswitcher.changeThemes', async () => {
 		const light = await vscode.window.showQuickPick(availableThemes, {
 			placeHolder: 'Pick a theme to be your light theme (esc to skip this step).',
@@ -61,15 +67,24 @@ export function activate(context: vscode.ExtensionContext) {
 			placeHolder: 'Pick a theme to be your dark theme (esc to skip this step).',
 		});
 		if (light)
-			themes.setLightTheme(light);
+			Themes.setLightTheme(light);
 		if (dark)
-			themes.setDarkTheme(dark);
-		if (light || dark)
-			vscode.window.showInformationMessage(`Success! Light: ${light ? light : themes.getLightTheme()}, Dark: ${dark ? dark : themes.getDarkTheme()}`);
+			Themes.setDarkTheme(dark);
+		if (light || dark) {
+			vscode.window.showInformationMessage(`Success! Light: ${light ? light : Themes.getLightTheme()}, Dark: ${dark ? dark : Themes.getDarkTheme()}`);
+			await reloadPrompt();
+		}
 	}));
 
-	let startTime = 0, endTime = 0;
+	/* FUNCTIONALITY CODE */
 
+	// get the startDay, endDay, and flipThemeTiming vars from the extension config
+	const startDay = extensionConfig.get('startDay') as string;
+	const endDay = extensionConfig.get('endDay') as string;
+	const flipThemeTiming = extensionConfig.get('filpThemeTiming') as boolean;
+
+	// attempt to get reasonable startTime and endTime for the daytime check (changeDay if bad values)
+	let startTime = 0, endTime = 0;
 	try {
 		startTime = getDate(startDay).getTime();
 		endTime = getDate(endDay).getTime();
@@ -82,13 +97,17 @@ export function activate(context: vscode.ExtensionContext) {
 		return;
 	}
 
+	// get current time
 	const currentTime = new Date().getTime();
 
+	// find out the current theme based on if current time matches user-defined day (account for flipped themes)
 	const isDay = currentTime > startTime && currentTime < endTime;
-	const currentTheme = isDay ? themes.getLightTheme() : themes.getDarkTheme();
+	const currentTheme = (isDay !== flipThemeTiming) ? Themes.getLightTheme() : Themes.getDarkTheme();
 
+	// update the current color theme
 	userSettings.update("workbench.colorTheme", currentTheme, true);
 
+	// display if it is day or night, and then what the current theme is (then optionally prompt for changeThemes)
 	const ct = 'Change Themes';
 	vscode.window.showInformationMessage(`It is ${isDay ? 'day' : 'night'} time. Your theme is now ${currentTheme}.`, ct)
 		.then(choice => {
@@ -96,12 +115,18 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 }
 
-function getDate(str: string): Date {
-	const hm = str.split(':');
-	let date = new Date();
+/**
+ * Takes a string representation of a time and turns it into a Date
+ * @param timeString string representation of a time in format HH:MM
+ */
+function getDate(timeString: string): Date {
+	// split the parts of the string into hours and minutes
+	const hm = timeString.split(':');
 	const hours = Number.parseInt(hm[0]);
 	const mins = Number.parseInt(hm[1]);
 	if (Number.isNaN(hours) || Number.isNaN(mins)) throw new Error('Bad value');
+	// create a new date, but set the hours and minutes to the given values
+	const date = new Date();
 	date.setHours(hours);
 	date.setMinutes(mins);
 	return date;

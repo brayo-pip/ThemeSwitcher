@@ -10,13 +10,16 @@
 	},
 	"version": "0.5.0",
 	"engines": {
-		"vscode": "^1.40.0"
+		"vscode": "^1.42.0"
 	},
+	"extensionKind": [
+		"ui"
+	],
 	"categories": [
 		"Themes"
 	],
 	"activationEvents": [
-		"*"
+		"onStartupFinished"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -43,15 +46,10 @@
 					"default": "15:00",
 					"description": "The 24-hour time (HH:MM) you want dark theme to start."
 				},
-				"themeswitcher.preferredLightColorTheme": {
-					"type": "string",
-					"default": "Default Light+",
-					"markdownDescription": "The light theme used in day.\n\nOverrriden by `workbench.preferredLightColorTheme` if available"
-				},
-				"themeswitcher.preferredDarkColorTheme": {
-					"type": "string",
-					"default": "Default Dark+",
-					"markdownDescription": "The dark theme used at night.\n\nOverrriden by `workbench.preferredDarkColorTheme` if available"
+				"themeswitcher.flipThemeTiming": {
+					"type": "boolean",
+					"default": false,
+					"description": "If true, will have the light mode in the night and dark mode in the day"
 				}
 			}
 		}
@@ -69,9 +67,9 @@
 		"@types/mocha": "^7.0.1",
 		"@types/node": "^12.11.7",
 		"@types/vscode": "^1.40.0",
-		"eslint": "^6.8.0",
-		"@typescript-eslint/parser": "^2.18.0",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
+		"@typescript-eslint/parser": "^2.18.0",
+		"eslint": "^6.8.0",
 		"glob": "^7.1.6",
 		"mocha": "^7.0.1",
 		"typescript": "^3.7.5",
