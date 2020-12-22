@@ -11,7 +11,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// get a list of themes on the system
 	const availableThemes: string[] = [];
 	for (const extension of vscode.extensions.all) {
-		for (const theme of extension.packageJSON.contributes?.themes) {
+		const extThemes = extension.packageJSON.contributes?.themes ?? [];
+		for (const theme of extThemes) {
 			availableThemes.push(theme.id ?? theme.label);
 		}
 	}

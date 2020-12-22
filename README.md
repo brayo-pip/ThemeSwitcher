@@ -11,6 +11,13 @@ Configure the light and dark themes using the `ThemeSwitcher: Change Themes` com
 For manual configuration:
 * Change the `workbench.preferredLightColorTheme` and `workbench.preferredDarkColorTheme` user settings 
 
+## Daytime Configuration
+
+Configure the start/end day times using the `ThemeSwitcher: Change Day` command (preferred method).
+
+For manual configuration:
+* Change the `themeswitcher.startDay` and `themeswitcher.endDay` user settings 
+
 ## Extension Settings
 
 This extension contributes the following settings:
