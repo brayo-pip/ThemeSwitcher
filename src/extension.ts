@@ -79,10 +79,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	/* FUNCTIONALITY CODE */
 
-	// get the startDay, endDay, and flipThemeTiming vars from the extension config
+	// get the vars from the extension config
 	const startDay = extensionConfig.get('startDay') as string;
 	const endDay = extensionConfig.get('endDay') as string;
 	const flipThemeTiming = extensionConfig.get('flipThemeTiming') as boolean;
+	const showNotifications = extensionConfig.get('showNotifications') as boolean;
 
 	// attempt to get reasonable startTime and endTime for the daytime check (changeDay if bad values)
 	let startTime = 0, endTime = 0;
@@ -110,10 +111,16 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// display if it is day or night, and then what the current theme is (then optionally prompt for changeThemes)
 	const ct = 'Change Themes';
-	vscode.window.showInformationMessage(`It is ${isDay ? 'day' : 'night'} time. Your theme is now ${currentTheme}.`, ct)
-		.then(choice => {
-			if (choice === ct) vscode.commands.executeCommand('themeswitcher.changeThemes');
-		});
+	const ns = 'Do not show again';
+	if (showNotifications) {
+		vscode.window.showInformationMessage(`It is ${isDay ? 'day' : 'night'} time. Your theme is now ${currentTheme}.`, ns, ct)
+			.then(choice => {
+				if (choice === ct) 
+					vscode.commands.executeCommand('themeswitcher.changeThemes');
+				else if (choice === ns) 
+					extensionConfig.update('showNotifications', false, true);
+			});
+	}
 }
 
 /**

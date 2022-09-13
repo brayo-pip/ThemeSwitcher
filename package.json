@@ -39,17 +39,22 @@
 				"themeswitcher.startDay": {
 					"type": "string",
 					"default": "7:00",
-					"description": "The 24-hour time (HH:MM) you want light theme to start."
+					"description": "The 24-hour time (HH:MM) you want light theme to start"
 				},
 				"themeswitcher.endDay": {
 					"type": "string",
 					"default": "15:00",
-					"description": "The 24-hour time (HH:MM) you want dark theme to start."
+					"description": "The 24-hour time (HH:MM) you want dark theme to start"
 				},
 				"themeswitcher.flipThemeTiming": {
 					"type": "boolean",
 					"default": false,
 					"description": "If true, will have the light mode in the night and dark mode in the day"
+				},
+				"themeswitcher.showNotifications": {
+					"type": "boolean",
+					"default": true,
+					"description": "If false, current theme popup will not appear on startup"
 				}
 			}
 		}
