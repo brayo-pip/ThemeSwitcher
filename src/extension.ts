@@ -6,7 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// init the configs for the user and for the extension
 	const userSettings = vscode.workspace.getConfiguration();
-	const extensionConfig = vscode.workspace.getConfiguration('Theme-Scheduler');
+	const extensionConfig = vscode.workspace.getConfiguration('theme-scheduler');
 
 	// get a list of themes on the system
 	const availableThemes: string[] = [];
