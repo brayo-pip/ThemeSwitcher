@@ -1,6 +1,6 @@
 {
-	"name": "themeswitcher",
-	"displayName": "ThemeSwitcher",
+	"name": "theme-switcher",
+	"displayName": "Theme Switcher",
 	"description": "Swap themes based on time of day",
 	"publisher": "MohnishKalia",
 	"icon": "images/moon.png",
@@ -25,33 +25,33 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "themeswitcher.changeDay",
-				"title": "ThemeSwitcher: Change Day"
+				"command": "theme-switcher.changeDay",
+				"title": "Theme Switcher: Change Day"
 			},
 			{
-				"command": "themeswitcher.changeThemes",
-				"title": "ThemeSwitcher: Change Themes"
+				"command": "theme-switcher.changeThemes",
+				"title": "Theme Switcher: Change Themes"
 			}
 		],
 		"configuration": {
-			"title": "ThemeSwitcher",
+			"title": "Theme Switcher",
 			"properties": {
-				"themeswitcher.startDay": {
+				"theme-switcher.startDay": {
 					"type": "string",
 					"default": "7:00",
 					"description": "The 24-hour time (HH:MM) you want light theme to start"
 				},
-				"themeswitcher.endDay": {
+				"theme-switcher.endDay": {
 					"type": "string",
 					"default": "15:00",
 					"description": "The 24-hour time (HH:MM) you want dark theme to start"
 				},
-				"themeswitcher.flipThemeTiming": {
+				"theme-switcher.flipThemeTiming": {
 					"type": "boolean",
 					"default": false,
 					"description": "If true, will have the light mode in the night and dark mode in the day"
 				},
-				"themeswitcher.showNotifications": {
+				"theme-switcher.showNotifications": {
 					"type": "boolean",
 					"default": true,
 					"description": "If false, current theme popup will not appear on startup"
@@ -82,7 +82,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/MohnishKalia/ThemeSwitcher"
+		"url": "https://github.com/MohnishKalia/Theme Switcher"
 	},
 	"license": "ISC"
 }

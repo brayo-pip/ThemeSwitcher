@@ -6,7 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// init the configs for the user and for the extension
 	const userSettings = vscode.workspace.getConfiguration();
-	const extensionConfig = vscode.workspace.getConfiguration('themeswitcher');
+	const extensionConfig = vscode.workspace.getConfiguration('Theme-Switcher');
 
 	// get a list of themes on the system
 	const availableThemes: string[] = [];
@@ -48,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
 	};
 
 	// register the changeDay command (updates startDay and endDay vars)
-	context.subscriptions.push(vscode.commands.registerCommand('themeswitcher.changeDay', async () => {
+	context.subscriptions.push(vscode.commands.registerCommand('Theme-Switcher.changeDay', async () => {
 		const start = await vscode.window.showInputBox({ prompt: 'Enter start day time.', placeHolder: 'HH:MM' });
 		const end = await vscode.window.showInputBox({ prompt: 'Enter end day time.', placeHolder: 'HH:MM' });
 		if (start)
@@ -60,9 +60,9 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	// register the changeThemes command (update the prefLight/Dark theme vars)
-	context.subscriptions.push(vscode.commands.registerCommand('themeswitcher.changeThemes', async () => {
+	context.subscriptions.push(vscode.commands.registerCommand('Theme-Switcher.changeThemes', async () => {
 		const light = await vscode.window.showQuickPick(availableThemes, {
-			placeHolder: 'Pick a theme to be your light theme (esc to skip this step).',
+			placeHolder: 'Pick a theme to be your light theme haha (esc to skip this step).',
 		});
 		const dark = await vscode.window.showQuickPick(availableThemes, {
 			placeHolder: 'Pick a theme to be your dark theme (esc to skip this step).',
@@ -89,25 +89,18 @@ export function activate(context: vscode.ExtensionContext) {
 	let startTime = 0, endTime = 0;
 	try {
 		startTime = getDate(startDay).getTime();
-		endTime = getDate(endDay).getTime();
+		endTime = getDate(endDay).getTime(); 
 	} catch (e) {
 		const cv = 'Change Values';
 		vscode.window.showErrorMessage('Invalid start or end day values.', cv)
 			.then(choice => {
-				if (choice === cv) vscode.commands.executeCommand('themeswitcher.changeDay');
+				if (choice === cv) vscode.commands.executeCommand('Theme-Switcher.changeDay');
 			});
 		return;
 	}
 
 	// get current time
-	const currentTime = new Date().getTime();
-
-	// find out the current theme based on if current time matches user-defined day (account for flipped themes)
-	const isDay = currentTime > startTime && currentTime < endTime;
-	const currentTheme = (isDay !== flipThemeTiming) ? Themes.getLightTheme() : Themes.getDarkTheme();
-
-	// update the current color theme
-	userSettings.update("workbench.colorTheme", currentTheme, true);
+	const { isDay, currentTheme } = setTheme();
 
 	// display if it is day or night, and then what the current theme is (then optionally prompt for changeThemes)
 	const ct = 'Change Themes';
@@ -116,11 +109,42 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage(`It is ${isDay ? 'day' : 'night'} time. Your theme is now ${currentTheme}.`, ns, ct)
 			.then(choice => {
 				if (choice === ct) 
-					vscode.commands.executeCommand('themeswitcher.changeThemes');
+					vscode.commands.executeCommand('Theme-Switcher.changeThemes');
 				else if (choice === ns) 
 					extensionConfig.update('showNotifications', false, true);
 			});
 	}
+	function setTheme() {
+		const currentTime = new Date().getTime();
+
+		// find out the current theme based on if current time matches user-defined day (account for flipped themes)
+		const isDay = currentTime > startTime && currentTime < endTime;
+		const currentTheme = (isDay !== flipThemeTiming) ? Themes.getLightTheme() : Themes.getDarkTheme();
+
+		// update the current color theme
+		userSettings.update("workbench.colorTheme", currentTheme, true);
+		return { isDay, currentTheme };
+	}
+	function scheduleThemeChange() {
+		// get the current time
+		const currentTime = new Date().getTime();
+		// find out if it is day or night
+		const isDay = currentTime > startTime && currentTime < endTime;
+		
+		let timeUntilChange = 0;
+		if (isDay)
+			// get the time until the next night (in ms)
+			timeUntilChange = (currentTime > endTime) ? (24 * 60 * 60 * 1000) - (currentTime - endTime) : endTime - currentTime;
+		else
+			timeUntilChange = (currentTime > startTime) ? (24 * 60 * 60 * 1000) - (currentTime - startTime) : startTime - currentTime;
+
+		// get the time until the next day (in ms)
+		setTimeout(() => {
+			setTheme();
+			scheduleThemeChange();
+		}, timeUntilChange);
+	}
+	scheduleThemeChange();
 }
 
 /**
