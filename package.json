@@ -1,6 +1,6 @@
 {
-	"name": "theme-switcher",
-	"displayName": "Theme Switcher",
+	"name": "theme-scheduler",
+	"displayName": "Theme Scheduler",
 	"description": "Swap themes based on time of day",
 	"publisher": "brayo",
 	"icon": "images/moon.png",
@@ -25,33 +25,33 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "theme-switcher.changeDay",
+				"command": "theme-scheduler.changeDay",
 				"title": "Theme Switcher: Change Day"
 			},
 			{
-				"command": "theme-switcher.changeThemes",
+				"command": "theme-scheduler.changeThemes",
 				"title": "Theme Switcher: Change Themes"
 			}
 		],
 		"configuration": {
 			"title": "Theme Switcher",
 			"properties": {
-				"theme-switcher.startDay": {
+				"theme-scheduler.startDay": {
 					"type": "string",
 					"default": "7:00",
 					"description": "The 24-hour time (HH:MM) you want light theme to start"
 				},
-				"theme-switcher.endDay": {
+				"theme-scheduler.endDay": {
 					"type": "string",
 					"default": "15:00",
 					"description": "The 24-hour time (HH:MM) you want dark theme to start"
 				},
-				"theme-switcher.flipThemeTiming": {
+				"theme-scheduler.flipThemeTiming": {
 					"type": "boolean",
 					"default": false,
 					"description": "If true, will have the light mode in the night and dark mode in the day"
 				},
-				"theme-switcher.showNotifications": {
+				"theme-scheduler.showNotifications": {
 					"type": "boolean",
 					"default": true,
 					"description": "If false, current theme popup will not appear on startup"

@@ -6,7 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// init the configs for the user and for the extension
 	const userSettings = vscode.workspace.getConfiguration();
-	const extensionConfig = vscode.workspace.getConfiguration('Theme-Switcher');
+	const extensionConfig = vscode.workspace.getConfiguration('Theme-Scheduler');
 
 	// get a list of themes on the system
 	const availableThemes: string[] = [];
@@ -48,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
 	};
 
 	// register the changeDay command (updates startDay and endDay vars)
-	context.subscriptions.push(vscode.commands.registerCommand('Theme-Switcher.changeDay', async () => {
+	context.subscriptions.push(vscode.commands.registerCommand('Theme-Scheduler.changeDay', async () => {
 		const start = await vscode.window.showInputBox({ prompt: 'Enter start day time.', placeHolder: 'HH:MM' });
 		const end = await vscode.window.showInputBox({ prompt: 'Enter end day time.', placeHolder: 'HH:MM' });
 		if (start)
@@ -60,7 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	// register the changeThemes command (update the prefLight/Dark theme vars)
-	context.subscriptions.push(vscode.commands.registerCommand('Theme-Switcher.changeThemes', async () => {
+	context.subscriptions.push(vscode.commands.registerCommand('Theme-Scheduler.changeThemes', async () => {
 		const light = await vscode.window.showQuickPick(availableThemes, {
 			placeHolder: 'Pick a theme to be your light theme haha (esc to skip this step).',
 		});
@@ -94,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const cv = 'Change Values';
 		vscode.window.showErrorMessage('Invalid start or end day values.', cv)
 			.then(choice => {
-				if (choice === cv) vscode.commands.executeCommand('Theme-Switcher.changeDay');
+				if (choice === cv) vscode.commands.executeCommand('Theme-Scheduler.changeDay');
 			});
 		return;
 	}
@@ -109,7 +109,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage(`It is ${isDay ? 'day' : 'night'} time. Your theme is now ${currentTheme}.`, ns, ct)
 			.then(choice => {
 				if (choice === ct) 
-					vscode.commands.executeCommand('Theme-Switcher.changeThemes');
+					vscode.commands.executeCommand('Theme-Scheduler.changeThemes');
 				else if (choice === ns) 
 					extensionConfig.update('showNotifications', false, true);
 			});

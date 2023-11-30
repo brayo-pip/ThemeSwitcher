@@ -16,15 +16,15 @@ For manual configuration:
 Configure the start/end day times using the `Theme Switcher: Change Day` command (preferred method).
 
 For manual configuration:
-* Change the `Theme-Switcher.startDay` and `Theme-Switcher.endDay` user settings 
+* Change the `Theme-Scheduler.startDay` and `Theme-Scheduler.endDay` user settings 
 
 ## Extension Settings
 
 This extension contributes the following settings:
 
-* `Theme-Switcher.startDay`: the time representing the 24-hour clock start of the day 
-* `Theme-Switcher.endDay`: the time representing the 24-hour clock end of the day 
-* `Theme-Switcher.flipThemeTiming`: if true, will have the light mode in the night and dark mode in the day (false by default)
+* `Theme-Scheduler.startDay`: the time representing the 24-hour clock start of the day 
+* `Theme-Scheduler.endDay`: the time representing the 24-hour clock end of the day 
+* `Theme-Scheduler.flipThemeTiming`: if true, will have the light mode in the night and dark mode in the day (false by default)
 
 ## Credits
 This was inspired by [ThemeSwitcher](https://github.com/MohnishKalia/ThemeSwitcher) and the icon was taken from there as well.
