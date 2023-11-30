@@ -2,7 +2,7 @@
 	"name": "theme-switcher",
 	"displayName": "Theme Switcher",
 	"description": "Swap themes based on time of day",
-	"publisher": "MohnishKalia",
+	"publisher": "brayo",
 	"icon": "images/moon.png",
 	"galleryBanner": {
 		"color": "#941FC7",
